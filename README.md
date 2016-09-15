@@ -6,3 +6,7 @@
 ```
 	run the project: meteor run
 ```
+
+```
+	meteor commandline doc: http://docs.meteor.com/commandline.html
+```
