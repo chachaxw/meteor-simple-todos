@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Task from './Task.jsx';
 import AccountsUIWrapper from './accountsUIWrapper.jsx';
@@ -7,12 +8,14 @@ import { Tasks } from '../api/tasks.js';
 
 // App component - represents the whole app
 class App extends Component {
+  
   // getTasks() {
   //   return [
   //     { _id: 1, text: 'This is task1' },
   //     ...this.props.tasks, //tasks from MongoDB
   //   ];
   // }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,7 +39,9 @@ class App extends Component {
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
     Tasks.insert({
       text,
-      createdAt: new Date(),
+      createdAt: new Date(), // current time
+      owner: Meteor.userId(), // _id of logged in user
+      username: Meteor.user().username, // username of logged in user
     });
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
@@ -63,13 +68,15 @@ class App extends Component {
             Hide Completed Tasks
           </label>
           <AccountsUIWrapper />
-          <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-            <input
-              type="text"
-              ref="textInput"
-              placeholder="Type to add new tasks"
-            />
-          </form>
+          { this.props.currentUser ?
+              <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
+              <input
+                type="text"
+                ref="textInput"
+                placeholder="Type to add new tasks"
+              />
+            </form> : ''
+          }
         </header>
         <ul>
           {this.renderTasks()}
@@ -82,11 +89,13 @@ class App extends Component {
 App.propTypes = {
   tasks: PropTypes.array.isRequired,
   incompleteCount: PropTypes.number.isRequired,
+  currentUser: PropTypes.object,
 };
 
 export default createContainer(() => {
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(), // tasks will be sorted by createdAt
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+    currentUser: Meteor.user(),
   };
 }, App);
