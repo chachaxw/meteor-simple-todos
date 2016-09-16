@@ -8,7 +8,7 @@ import { Tasks } from '../api/tasks.js';
 
 // App component - represents the whole app
 class App extends Component {
-  
+
   // getTasks() {
   //   return [
   //     { _id: 1, text: 'This is task1' },
@@ -37,12 +37,9 @@ class App extends Component {
     e.preventDefault();
 
     const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
-    Tasks.insert({
-      text,
-      createdAt: new Date(), // current time
-      owner: Meteor.userId(), // _id of logged in user
-      username: Meteor.user().username, // username of logged in user
-    });
+
+    Meteor.call('tasks.insert', text);
+
     ReactDOM.findDOMNode(this.refs.textInput).value = '';
   }
 
@@ -93,6 +90,8 @@ App.propTypes = {
 };
 
 export default createContainer(() => {
+  Meteor.subscribe('tasks');
+
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(), // tasks will be sorted by createdAt
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
