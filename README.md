@@ -8,5 +8,9 @@
 ```
 
 ```
-	meteor commandline doc: http://docs.meteor.com/commandline.html
+	(http://docs.meteor.com/commandline.html "meteor commandline doc")
+```
+
+```
+	(https://www.meteor.com/tutorials/react/ "Todo list tutorials")
 ```
