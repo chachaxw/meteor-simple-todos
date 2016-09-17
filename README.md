@@ -8,6 +8,10 @@
 ```
 
 ```
+	run the test: meteor test --driver-package practicalmeteor:mocha
+```	
+
+```
 	(http://docs.meteor.com/commandline.html "meteor commandline doc")
 ```
 
