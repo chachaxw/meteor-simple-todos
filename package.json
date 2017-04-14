@@ -5,8 +5,11 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "classnames": "^2.2.5",
+    "create-react-class": "^15.5.2",
     "meteor-node-stubs": "~0.2.0",
+    "prop-types": "^15.5.8",
     "react": "^15.3.1",
     "react-addons-pure-render-mixin": "^15.3.1",
     "react-dom": "^15.3.1"
